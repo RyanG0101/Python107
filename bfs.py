@@ -1,28 +1,39 @@
-graph = {
-  '5' : ['3','7'],
-  '3' : ['2', '4'],
-  '7' : ['8'],
-  '2' : [],
-  '4' : ['8'],
-  '8' : []
+from queue import Queue
+adj_list = {
+    "A":["B", "D"],
+    "B":["A", "C"],
+    "C":["B"],
+    "D": ["A", "E", "F"],
+    "E":["D", "F", "G"],
+    "F":["D", "E", "H"],
+    "G":["E", "H"],
+    "H":["G", "F"]
 }
+# bfs code
+visited = {}
+level = {} # distance dictionary
+parent = {}
+bfs_traversal_output = []
+queue= Queue ()
 
-visited = [] # List for visited nodes.
-queue = []     #Initialize a queue
-
-def bfs(visited, graph, node): #function for BFS
-  visited.append(node)
-  queue.append(node)
-
-  while queue:          # Creating loop to visit each node
-    m = queue.pop(0) 
-    print (m, end = " ") 
-
-    for neighbour in graph[m]:
-      if neighbour not in visited:
-        visited.append(neighbour)
-        queue.append(neighbour)
-
-# Driver Code
-print("Following is the Breadth-First Search")
-bfs(visited, graph, '5')    # function calling
+for node in adj_list.keys():
+    visited[node] = False
+    parent [node] = None
+    level [node] = -1 #inf
+    
+s = "A"
+visited[s] = True
+level [s] = 0
+queue.put(s)
+    
+while not queue.empty():
+    u = queue.get()
+    bfs_traversal_output.append (u)
+    
+    for v in adj_list[u]:
+        if not visited[v]:
+            visited[v] = True
+            parent [v] = u
+            level [v] = level [u] +1
+            queue.put (v)
+print(bfs_traversal_output)
